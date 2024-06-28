@@ -10,7 +10,7 @@ class Order:
     _currency: str = 'EUR'
     _items: list[OrderItem]
     _tax: Price
-    status: OrderStatus
+    _status: OrderStatus
 
     @property
     def id(self) -> int:
@@ -32,9 +32,13 @@ class Order:
     def currency(self) -> str:
         return self._currency
 
+    @property
+    def status(self) -> OrderStatus:
+        return self._status
+
     def __init__(self, id: int = 0, currency: str = 'EUR', status: OrderStatus = OrderStatus.CREATED) -> None:
         super().__init__()
-        self.status = status
+        self._status = status
         self._tax = Price(0, currency)
         self._items = []
         self._currency = currency
@@ -46,3 +50,6 @@ class Order:
         self._items.append(order_item)
         self._total = self.total.add(order_item.taxed_amount)
         self._tax = self.tax.add(order_item.tax)
+
+    def change_status(self, status: OrderStatus):
+        self._status = status

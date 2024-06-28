@@ -1,8 +1,8 @@
-from ..domain.order_status import OrderStatus
-from ..repository.order_repository import OrderRepository
 from .exceptions import ShippedOrdersCannotBeChangedException, \
     RejectedOrderCannotBeApprovedException, ApprovedOrderCannotBeRejectedException
 from .order_approval_request import OrderApprovalRequest
+from ..domain.order_status import OrderStatus
+from ..repository.order_repository import OrderRepository
 
 
 class OrderApprovalUseCase:
@@ -21,5 +21,5 @@ class OrderApprovalUseCase:
         if not request.approved and order.status == OrderStatus.APPROVED:
             raise ApprovedOrderCannotBeRejectedException()
 
-        order.status = OrderStatus.APPROVED if request.approved else OrderStatus.REJECTED
+        order.change_status(OrderStatus.APPROVED if request.approved else OrderStatus.REJECTED)
         self._order_repository.save(order)

@@ -1,8 +1,8 @@
+from .exceptions import OrderCannotBeShippedTwiceException, OrderCannotBeShippedException
 from .order_shipment_request import OrderShipmentRequest
 from ..domain.order_status import OrderStatus
 from ..repository.order_repository import OrderRepository
 from ..service.shipment_service import ShipmentService
-from .exceptions import OrderCannotBeShippedTwiceException, OrderCannotBeShippedException
 
 
 class OrderShipmentUseCase:
@@ -21,5 +21,5 @@ class OrderShipmentUseCase:
 
         self._shipment_service.ship(order)
 
-        order.status = OrderStatus.SHIPPED
+        order.change_status(OrderStatus.SHIPPED)
         self._order_repository.save(order)
