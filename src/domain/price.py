@@ -22,9 +22,6 @@ class Price:
         return Price(self.amount * by, self.currency)
 
     def __eq__(self, price: object) -> bool:
-        # remove after refactoring
-        if isinstance(price, (int, float)):
-            return self.amount == price
         if not isinstance(price, Price):
             return False
         return self.amount == price.amount and self.currency == price.currency

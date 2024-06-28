@@ -30,20 +30,20 @@ class TestOrderCreationUseCase:
 
         inserted_order = self.order_repository.inserted_order
         assert inserted_order.status == OrderStatus.CREATED
-        assert inserted_order.total == 23.20
-        assert inserted_order.tax == 2.13
+        assert inserted_order.total == Price(23.20, 'EUR')
+        assert inserted_order.tax == Price(2.13, 'EUR')
         assert inserted_order.currency == 'EUR'
         assert len(inserted_order.items) == 2
         assert inserted_order.items[0].product.name == 'salad'
-        assert inserted_order.items[0].product.price == 3.56
+        assert inserted_order.items[0].product.price == Price(3.56, 'EUR')
         assert inserted_order.items[0].quantity == 2
-        assert inserted_order.items[0].taxed_amount == 7.84
-        assert inserted_order.items[0].tax == 0.72
+        assert inserted_order.items[0].taxed_amount == Price(7.84, 'EUR')
+        assert inserted_order.items[0].tax == Price(0.72, 'EUR')
         assert inserted_order.items[1].product.name == 'tomato'
-        assert inserted_order.items[1].product.price == 4.65
+        assert inserted_order.items[1].product.price == Price(4.65, 'EUR')
         assert inserted_order.items[1].quantity == 3
-        assert inserted_order.items[1].taxed_amount == 15.36
-        assert inserted_order.items[1].tax == 1.41
+        assert inserted_order.items[1].taxed_amount == Price(15.36, 'EUR')
+        assert inserted_order.items[1].tax == Price(1.41, 'EUR')
 
     def test_unknown_product(self):
         request = OrderCreationCommand()
