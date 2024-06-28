@@ -3,7 +3,6 @@ from .sell_items_request import OrderCreationCommand
 from ..domain.order import Order
 from ..domain.order_item import OrderItem
 from ..domain.order_status import OrderStatus
-from ..domain.price import Price
 from ..repository.order_repository import OrderRepository
 from ..repository.product_catalog import ProductCatalog
 
@@ -15,11 +14,7 @@ class OrderCreationUseCase:
 
     def run(self, cart: OrderCreationCommand) -> None:
         currency = 'EUR'
-        order = Order(
-            status=OrderStatus.CREATED,
-            items=[],
-            currency=currency,
-        )
+        order = Order(currency=currency, status=OrderStatus.CREATED)
 
         for cart_item in cart.items:
             product = self._product_catalog.get_by_name(cart_item.product_name)
@@ -27,22 +22,20 @@ class OrderCreationUseCase:
             if product is None:
                 raise UnknownProductException()
             else:
-                product_price = Price(product.price, currency)
-
-                unitary_tax = product_price.percent(product.category.tax_percentage).round()
-                unitary_taxed_amount = unitary_tax.add(product_price).round()
+                unitary_tax = product.price.percent(product.category.tax_percentage).round()
+                unitary_taxed_amount = unitary_tax.add(product.price).round()
                 taxed_amount = unitary_taxed_amount.multiply(by=cart_item.quantity).round()
                 tax_amount = unitary_tax.multiply(by=cart_item.quantity)
 
                 order_item = OrderItem(
                     product=product,
                     quantity=cart_item.quantity,
-                    tax=tax_amount.amount,
-                    taxed_amount=taxed_amount.amount
+                    tax=tax_amount,
+                    taxed_amount=taxed_amount
                 )
                 order.items.append(order_item)
 
-                order.total += order_item.taxed_amount
-                order.tax += order_item.tax
+                order.total = order.total.add(order_item.taxed_amount)
+                order.tax = order.tax.add(order_item.tax)
 
         self._order_repository.save(order)

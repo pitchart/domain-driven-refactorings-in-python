@@ -1,11 +1,16 @@
-from dataclasses import dataclass, field
-
+from .price import Price
 from .product import Product
 
 
-@dataclass
 class OrderItem:
-    product: Product = field(default_factory=Product)
-    quantity: int = 0
-    taxed_amount: float = 0
-    tax: float = 0
+    product: Product
+    quantity: int
+    taxed_amount: Price
+    tax: Price
+
+    def __init__(self, product: Product, quantity: int, taxed_amount: Price, tax: Price) -> None:
+        super().__init__()
+        self.tax = tax
+        self.taxed_amount = taxed_amount
+        self.quantity = quantity
+        self.product = product

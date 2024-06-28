@@ -2,6 +2,7 @@ import pytest
 
 from src.domain.category import Category
 from src.domain.order_status import OrderStatus
+from src.domain.price import Price
 from src.domain.product import Product
 from src.use_case.exceptions import UnknownProductException
 from src.use_case.order_creation_use_case import OrderCreationUseCase
@@ -15,8 +16,8 @@ class TestOrderCreationUseCase:
     def setup_method(self):
         self.order_repository = TestOrderRepository()
         self.product_catalog = InMemoryProductCatalog([
-            Product(name='salad', price=3.56, category=Category(name='food', tax_percentage=10)),
-            Product(name='tomato', price=4.65, category=Category(name='food', tax_percentage=10))
+            Product(name='salad', price=Price(3.56, 'EUR'), category=Category(name='food', tax_percentage=10)),
+            Product(name='tomato', price=Price(4.65, 'EUR'), category=Category(name='food', tax_percentage=10))
         ])
         self.use_case = OrderCreationUseCase(self.order_repository, self.product_catalog)
 
@@ -50,4 +51,3 @@ class TestOrderCreationUseCase:
 
         with pytest.raises(UnknownProductException):
             self.use_case.run(request)
-
