@@ -1,7 +1,6 @@
 from .exceptions import UnknownProductException
 from .sell_items_request import OrderCreationCommand
 from ..domain.order import Order
-from ..domain.order_item import OrderItem
 from ..domain.order_status import OrderStatus
 from ..repository.order_repository import OrderRepository
 from ..repository.product_catalog import ProductCatalog
@@ -21,12 +20,7 @@ class OrderCreationUseCase:
 
             if product is None:
                 raise UnknownProductException()
-            else:
-                order_item = OrderItem(product=product, quantity=cart_item.quantity)
 
-                order.items.append(order_item)
-
-                order.total = order.total.add(order_item.taxed_amount)
-                order.tax = order.tax.add(order_item.tax)
+            order.add_item_for(quantity=cart_item.quantity, product=product)
 
         self._order_repository.save(order)
