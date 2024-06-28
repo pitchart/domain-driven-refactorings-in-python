@@ -1,8 +1,8 @@
 from dataclasses import dataclass, field
 
-from .sell_item_request import SellItemRequest
+from .sell_item_request import CartItem
 
 
 @dataclass
-class SellItemsRequest:
-    requests: list[SellItemRequest] = field(default_factory=list)
+class OrderCreationCommand:
+    items: list[CartItem] = field(default_factory=list)

@@ -5,8 +5,8 @@ from src.domain.order_status import OrderStatus
 from src.domain.product import Product
 from src.use_case.exceptions import UnknownProductException
 from src.use_case.order_creation_use_case import OrderCreationUseCase
-from src.use_case.sell_item_request import SellItemRequest
-from src.use_case.sell_items_request import SellItemsRequest
+from src.use_case.sell_item_request import CartItem
+from src.use_case.sell_items_request import OrderCreationCommand
 from test.doubles.in_memory_product_catalog import InMemoryProductCatalog
 from test.doubles.test_order_repository import TestOrderRepository
 
@@ -21,9 +21,9 @@ class TestOrderCreationUseCase:
         self.use_case = OrderCreationUseCase(self.order_repository, self.product_catalog)
 
     def test_sell_multiple_items(self):
-        request = SellItemsRequest()
-        request.requests.append(SellItemRequest(product_name='salad', quantity=2))
-        request.requests.append(SellItemRequest(product_name='tomato', quantity=3))
+        request = OrderCreationCommand()
+        request.items.append(CartItem(product_name='salad', quantity=2))
+        request.items.append(CartItem(product_name='tomato', quantity=3))
 
         self.use_case.run(request)
 
@@ -45,8 +45,8 @@ class TestOrderCreationUseCase:
         assert inserted_order.items[1].tax == 1.41
 
     def test_unknown_product(self):
-        request = SellItemsRequest()
-        request.requests.append(SellItemRequest(product_name='unknown product', quantity=1))
+        request = OrderCreationCommand()
+        request.items.append(CartItem(product_name='unknown product', quantity=1))
 
         with pytest.raises(UnknownProductException):
             self.use_case.run(request)
