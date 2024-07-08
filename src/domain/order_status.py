@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
 from enum import Enum, auto
 
+from typing_extensions import Self
+
 
 class OrderStatus(Enum):
     APPROVED = auto()
@@ -13,6 +15,16 @@ class OrderState(ABC):
     @abstractmethod
     def get_status(self) -> OrderStatus:
         pass
+
+    @staticmethod
+    def create(status: OrderStatus) -> Self:
+        cases = {
+            OrderStatus.CREATED: Created,
+            OrderStatus.APPROVED: Approved,
+            OrderStatus.REJECTED: Rejected,
+            OrderStatus.SHIPPED: Shipped,
+        }
+        return cases.get(status)()
 
 
 class Created(OrderState):
