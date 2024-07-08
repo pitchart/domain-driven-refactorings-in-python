@@ -1,5 +1,5 @@
 from .order_item import OrderItem
-from .order_status import OrderStatus
+from .order_status import OrderStatus, OrderState
 from .price import Price
 from .product import Product
 
@@ -10,7 +10,7 @@ class Order:
     _currency: str = 'EUR'
     _items: list[OrderItem]
     _tax: Price
-    _status: OrderStatus
+    _state: OrderState
 
     @property
     def id(self) -> int:
@@ -34,11 +34,11 @@ class Order:
 
     @property
     def status(self) -> OrderStatus:
-        return self._status
+        return self._state.get_status()
 
     def __init__(self, id: int = 0, currency: str = 'EUR', status: OrderStatus = OrderStatus.CREATED) -> None:
         super().__init__()
-        self._status = status
+        self._state = OrderState.create(status)
         self._tax = Price(0, currency)
         self._items = []
         self._currency = currency
@@ -51,5 +51,11 @@ class Order:
         self._total = self.total.add(order_item.taxed_amount)
         self._tax = self.tax.add(order_item.tax)
 
-    def change_status(self, status: OrderStatus):
-        self._status = status
+    def approve(self):
+        self._state = self._state.approve()
+
+    def reject(self):
+        self._state = self._state.reject()
+
+    def ship(self):
+        self._state = self._state.ship()

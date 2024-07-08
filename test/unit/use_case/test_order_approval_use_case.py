@@ -1,9 +1,9 @@
 import pytest
 
+from src.domain.exceptions import ApprovedOrderCannotBeRejectedException, \
+    ShippedOrdersCannotBeChangedException, RejectedOrderCannotBeApprovedException
 from src.domain.order import Order
 from src.domain.order_status import OrderStatus
-from src.use_case.exceptions import ApprovedOrderCannotBeRejectedException, \
-    ShippedOrdersCannotBeChangedException, RejectedOrderCannotBeApprovedException
 from src.use_case.order_approval_request import OrderApprovalRequest
 from src.use_case.order_approval_use_case import OrderApprovalUseCase
 from test.doubles.test_order_repository import TestOrderRepository

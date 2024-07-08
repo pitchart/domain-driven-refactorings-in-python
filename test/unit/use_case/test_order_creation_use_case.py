@@ -1,10 +1,10 @@
 import pytest
 
 from src.domain.category import Category
+from src.domain.exceptions import UnknownProductException
 from src.domain.order_status import OrderStatus
 from src.domain.price import Price
 from src.domain.product import Product
-from src.use_case.exceptions import UnknownProductException
 from src.use_case.order_creation_use_case import OrderCreationUseCase
 from src.use_case.sell_item_request import CartItem
 from src.use_case.sell_items_request import OrderCreationCommand

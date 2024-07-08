@@ -1,4 +1,4 @@
-from .exceptions import UnknownProductException
+from src.domain.exceptions import UnknownProductException
 from .sell_items_request import OrderCreationCommand
 from ..domain.order import Order
 from ..domain.order_status import OrderStatus

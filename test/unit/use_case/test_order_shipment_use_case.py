@@ -1,8 +1,8 @@
 import pytest
 
+from src.domain.exceptions import OrderCannotBeShippedException, OrderCannotBeShippedTwiceException
 from src.domain.order import Order
 from src.domain.order_status import OrderStatus
-from src.use_case.exceptions import OrderCannotBeShippedException, OrderCannotBeShippedTwiceException
 from src.use_case.order_shipment_request import OrderShipmentRequest
 from src.use_case.order_shipment_use_case import OrderShipmentUseCase
 from test.doubles.test_order_repository import TestOrderRepository
