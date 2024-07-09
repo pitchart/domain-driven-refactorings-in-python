@@ -1,6 +1,6 @@
+from src.repository.order_repository import OrderRepository
+from src.service.shipment_service import ShipmentService
 from .order_shipment_request import OrderShipmentRequest
-from ..repository.order_repository import OrderRepository
-from ..service.shipment_service import ShipmentService
 
 
 class OrderShipmentUseCase:

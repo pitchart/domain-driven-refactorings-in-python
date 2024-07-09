@@ -1,9 +1,9 @@
 from src.domain.exceptions import UnknownProductException
+from src.domain.order import Order
+from src.domain.order_status import OrderStatus
+from src.repository.order_repository import OrderRepository
+from src.repository.product_catalog import ProductCatalog
 from .sell_items_request import OrderCreationCommand
-from ..domain.order import Order
-from ..domain.order_status import OrderStatus
-from ..repository.order_repository import OrderRepository
-from ..repository.product_catalog import ProductCatalog
 
 
 class OrderCreationUseCase:

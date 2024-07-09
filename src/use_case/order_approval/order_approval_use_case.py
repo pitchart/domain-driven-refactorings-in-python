@@ -1,5 +1,5 @@
+from src.repository.order_repository import OrderRepository
 from .order_approval_request import OrderApprovalRequest
-from ..repository.order_repository import OrderRepository
 
 
 class OrderApprovalUseCase:
