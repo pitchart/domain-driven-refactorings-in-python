@@ -1,5 +1,6 @@
 from .order_item import OrderItem
-from .order_status import OrderStatus, OrderState
+from .order_state import OrderState
+from .order_status import OrderStatus
 from .price import Price
 from .product import Product
 
